@@ -9,7 +9,7 @@
   --bg: #ffffff;
   --text: #1c1c1e;
   --muted: #6c6c70;
-  --accent: #e8590c;
+  --accent: #c2410c;
   --rule: #e5e5ea;
   color-scheme: light dark;
 }
@@ -46,46 +46,49 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
 <main>
 <header>
   <div class="brand">RingMeFor</div>
-  <h1>Privacy Policy</h1>
-  <p class="muted">Last updated November 7, 2026</p>
+  <h1 id="privacy-policy">Privacy Policy</h1>
+  <p class="muted">Last updated November 8, 2026</p>
 </header>
 
-<p class="lead"><strong>RingMeFor doesn't collect any of your data.</strong> It has no account, no server, no analytics, no ads and no tracking. Everything it handles stays on your iPhone.</p>
+<p class="lead"><strong>RingMeFor doesn't collect any of your data.</strong> It has no account, no server, no analytics, no ads and no tracking. Everything it handles stays on your iPhone and the Apple devices paired with it; Apple's own services are described below.</p>
 
-<h2>What RingMeFor handles, on your iPhone</h2>
+<h2 id="what-it-handles">What RingMeFor handles, on your iPhone</h2>
 <ul>
-  <li><strong>Notifications from the apps in your RingMeFor shortcut.</strong> The Shortcuts automation you add passes RingMeFor each notification's app, title, subtitle, sender and text, when it was sent, and whether it's Time Sensitive. RingMeFor checks it against your rules, on your iPhone.</li>
-  <li>Notifications from apps you haven't added in RingMeFor are ignored and not kept. If you add an app RingMeFor doesn't know to the shortcut yourself, RingMeFor adds it to your apps, with no rules.</li>
-  <li><strong>What it keeps:</strong> your apps, rules and settings; a History of the notifications it checks, with up to 140 characters of each message and up to 80 of its title, subtitle and sender, when it arrived, and what RingMeFor did; and when it last heard from the shortcut and passed a self-test, so it can tell you if something stops working. History keeps at most 300 entries, and older ones are removed.</li>
-  <li><strong>Alarms</strong> show the app and who the notification is from, and the message too if you turn on Show the message. They appear on your Lock Screen and a paired Apple Watch, even if you hide notification previews.</li>
-  <li><strong>Self-tests:</strong> if you use them, RingMeFor schedules its own notifications on your iPhone.</li>
+  <li><strong>Notifications from the apps in your RingMeFor shortcut.</strong> The Shortcuts automation you add passes RingMeFor each notification's app, title and text, and, with the newest RingMeFor shortcut, its subtitle, sender, when it was sent and whether it's Time Sensitive. RingMeFor checks it against your rules, on your iPhone.</li>
+  <li>Notifications from the ready-made apps you haven't added in RingMeFor are ignored and not kept. If the shortcut passes a notification from an app RingMeFor doesn't know, because you added that app to the shortcut or because iOS reports an app under another app's name, RingMeFor adds it to your apps by name, with no rules, and keeps none of its messages until you add a rule to it or turn it on. If you remove an app that RingMeFor added this way, it isn't added again. If RingMeFor can't tell which app a notification came from, History notes that, with the first 40 characters of what arrived as the app's name so you can fix the shortcut; the message isn't kept.</li>
+  <li><strong>What it keeps:</strong> your apps, rules and settings; a History of the notifications it checks from your apps, including ones that didn't ring, with up to 140 characters of each message and up to 80 of its title, subtitle and sender, when it was sent and arrived, whether it was Time Sensitive, the word or person that matched, and what RingMeFor did; the titles of alarms it has set, for about half an hour after they ring; when each rule last rang; and when it last heard from each app and from the shortcut and how its self-tests went, so it can tell you if something stops working. History keeps at most 300 entries, and older ones are removed. Show Every Notification in History changes only what's shown, not what's kept.</li>
+  <li><strong>Alarms</strong> show the app and the notification's title when that is who it's from, as in chat and email apps; for apps such as reminders, calendar, alerts, trading, payments and cameras, they show the app and the rule's name instead. Turn on Show the message to add the first line of the message. Alarms appear on your Lock Screen, in StandBy and on a paired Apple Watch, even if you hide notification previews. While an alarm is snoozed, its title also shows in a countdown on the Lock Screen, Apple Watch, CarPlay and a Mac that mirrors your iPhone. While RingMeFor is on for a set time, a Live Activity on the Lock Screen lists the names of your apps.</li>
+  <li><strong>Self-tests:</strong> if you use them, RingMeFor schedules its own notifications on your iPhone, and your RingMeFor shortcut passes them back like any other notification.</li>
+  <li><strong>Where it's stored:</strong> RingMeFor's data is stored in its own folder on your iPhone and encrypted by iOS like other apps' data. Because the shortcut must reach RingMeFor while your iPhone is locked, RingMeFor can read its data from the first time you unlock your iPhone after a restart, as most apps can.</li>
 </ul>
 
-<h2>What leaves your iPhone</h2>
-<p>Nothing, from RingMeFor. It sends nothing to its developer or anyone else, and contains no third-party code that does. Apple's own services work as usual:</p>
+<h2 id="what-leaves">What leaves your iPhone</h2>
+<p>Nothing, from RingMeFor. It sends nothing to the developer or anyone else, and contains no third-party code that does. Apple's own services work as usual, and a few buttons hand things to other apps:</p>
 <ul>
   <li><strong>Backups:</strong> if you use iCloud Backup or back up to a computer, RingMeFor's data is included, like other apps' data.</li>
-  <li><strong>Crash reports:</strong> if you turn on Share With App Developers (Settings → Privacy &amp; Security → Analytics &amp; Improvements), Apple may share crash reports with the developer. They don't include your notifications or History.</li>
+  <li><strong>Crash reports:</strong> if you turn on Share With App Developers (Settings → Privacy &amp; Security → Analytics &amp; Improvements), Apple may share crash reports with the developer. They don't include your notifications or History, and RingMeFor doesn't write the names of your apps or anything from your notifications to the iPhone's device log.</li>
   <li><strong>Purchases:</strong> RingMeFor Pro is bought through the App Store. Apple handles the payment, and the developer never sees your payment details. RingMeFor checks the purchase on your iPhone with Apple's StoreKit.</li>
-  <li><strong>Siri:</strong> if you ask Siri to turn RingMeFor on or off, Apple handles the request under its own privacy policy.</li>
+  <li><strong>Siri:</strong> if you ask Siri to turn RingMeFor on or off, or ask whether it's on, Apple handles the request under its own privacy policy.</li>
+  <li><strong>Links and the shortcut:</strong> Help and Support and this policy open in your web browser, and Rate RingMeFor opens the App Store. Adding the RingMeFor shortcut opens an iCloud link in Apple's Shortcuts app, which downloads the shortcut from Apple. If you use iCloud for Shortcuts, the shortcut syncs to your other devices; it holds the list of apps it listens to, not your notifications. This website is hosted on GitHub Pages, which logs visitors' IP addresses under GitHub's privacy statement; the site has no cookies or analytics.</li>
+  <li><strong>Email Support:</strong> in Settings → About, Email Support opens your mail app with a message to the developer, with the versions of RingMeFor and iOS and RingMeFor's status filled in, such as whether it's on and when the shortcut last answered. It includes nothing from your notifications, History or rules. You can edit it before sending, and nothing is sent unless you send it.</li>
 </ul>
 
-<h2>Deleting your data</h2>
+<h2 id="deleting">Deleting your data</h2>
 <ul>
-  <li>To clear History: in RingMeFor, tap History, then the ••• button, then Clear history.</li>
-  <li>To delete an app or a rule, remove it in RingMeFor.</li>
-  <li>To delete everything, delete RingMeFor. Delete the RingMeFor shortcut in Shortcuts too, so its automation stops running.</li>
+  <li>To clear History: in RingMeFor, tap <strong>History</strong>, then the <strong>•••</strong> button, then <strong>Clear History</strong>, and confirm. This also deletes any copy RingMeFor kept of a data file it couldn't read; such copies are otherwise deleted after 7 days.</li>
+  <li>To delete an app and its rules, tap it on RingMeFor's Home screen, then the <strong>Remove</strong> button at the bottom of its page. Removing an app also deletes its History entries. To delete one rule, open it and tap <strong>Delete Rule</strong>.</li>
+  <li>To delete everything, delete RingMeFor. Deleting RingMeFor doesn't delete the shortcut or its automation: Shortcuts keeps running it for those apps' notifications until you delete it there, so delete the RingMeFor shortcut in Shortcuts too.</li>
 </ul>
-<p>The developer has no copy of your data, so what you delete can't be recovered, except from your own backups.</p>
+<p>Your own backups may hold a copy of RingMeFor's data until they're replaced. The developer has no copy of your data, so there's nothing to request from the developer, and what you delete can't be recovered, except from your own backups.</p>
 
-<h2>Children</h2>
+<h2 id="children">Children</h2>
 <p>RingMeFor isn't directed at children, and it collects no data from anyone.</p>
 
-<h2>Changes</h2>
+<h2 id="changes">Changes</h2>
 <p>If this policy changes, the new version will be posted on this page with a new date.</p>
 
-<h2>Contact</h2>
-<p>Questions about privacy: <a href="mailto:lancemikaelo.enriquez@gmail.com">lancemikaelo.enriquez@gmail.com</a>.</p>
+<h2 id="contact">Contact</h2>
+<p>RingMeFor is made by Lance Mikaelo Enriquez (Philippines). Questions about privacy: <a href="mailto:lancemikaelo.enriquez@gmail.com?subject=RingMeFor%20support">lancemikaelo.enriquez@gmail.com</a>.</p>
 
 <footer><a href="./">RingMeFor help and support</a></footer>
 </main>
