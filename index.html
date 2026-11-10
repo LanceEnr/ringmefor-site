@@ -3,229 +3,337 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RingMeFor Help</title>
+<title>RingMeFor: Notification Alarm for Apps</title>
+<meta name="description" content="RingMeFor rings a real alarm on your iPhone when a notification you can't miss arrives, even on Silent and in a Focus. Everything else stays quiet.">
+<meta property="og:title" content="RingMeFor: Notification Alarm for Apps">
+<meta property="og:description" content="Your iPhone stays quiet until the message you can't miss arrives. Then it rings like an alarm.">
+<meta property="og:image" content="https://lanceenr.github.io/ringmefor-site/images/icon-256.png">
+<meta name="theme-color" content="#0b0a22">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="icon" href="images/favicon-64.png" sizes="64x64">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+// Links to help topics used to point here (index.html#restart): they open the help page now.
+(function () {
+  var topics = ["help","good-to-know","set-up","add-app","on-off","stopping","not-ringing","pro","questions","ios-26","keep-open","ready-made-rules","battery","low-power","focus","allow-running","restart","after-update","action-unavailable","one-alarm","wrong-message","too-many","person-rule","lock-screen","apple-watch","nightly-check","new-iphone","second-device","shortcut-twice","shortcut-wont-open","app-added","unknown-app","history-unexpected","messages","free-version","calls-texts","internet","pause","siri","language","accessibility","removing","contact"];
+  var topic = location.hash.slice(1);
+  if (topic && topics.indexOf(topic) >= 0) location.replace("help.html#" + topic);
+})();
+</script>
 <style>
 :root {
-  --bg: #ffffff;
-  --text: #1c1c1e;
-  --muted: #6c6c70;
-  --accent: #635bff;
-  --rule: #e5e5ea;
-  color-scheme: light dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #000000;
-    --text: #f2f2f7;
-    --muted: #a1a1a6;
-    --accent: #8a84ff;
-    --rule: #2c2c2e;
-  }
+  --night: #0b0a22;
+  --deep: #12103a;
+  --raise: #1b184d;
+  --indigo: #635bff;
+  --glow: #8a84ff;
+  --paper: #f3f2ff;
+  --dim: #b0add9;
+  --quiet: #6e6b98;
+  --line: rgba(138, 132, 255, 0.2);
+  --round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
+  --text: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: var(--night);
+  color: var(--paper);
+  font: 18px/1.55 var(--text);
+  -webkit-font-smoothing: antialiased;
 }
-main { max-width: 680px; margin: 0 auto; padding: 40px 16px 64px; }
-header { margin-bottom: 28px; }
-.brand { color: var(--accent); font-weight: 700; letter-spacing: 0.01em; }
-h1 { font-size: 32px; line-height: 1.2; margin: 6px 0 10px; }
-h2 { font-size: 21px; margin: 32px 0 8px; }
-h3 { font-size: 17px; margin: 22px 0 4px; }
-h1, h2, h3 { scroll-margin-top: 16px; }
-p, li { margin: 0 0 10px; }
-ul, ol { padding-left: 22px; margin: 0 0 10px; }
-.lead { font-size: 19px; }
-.muted { color: var(--muted); font-size: 15px; }
-.note { border: 1px solid var(--rule); border-radius: 12px; padding: 16px 16px 6px; }
-.note h2 { font-size: 19px; margin: 0 0 8px; }
-a { color: var(--accent); }
-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px; }
+a { color: var(--glow); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+h1, h2, h3 { font-family: var(--round); letter-spacing: -0.015em; margin: 0; }
+h2 { font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; font-weight: 800; }
+h3 { font-size: 20px; line-height: 1.3; font-weight: 700; }
+p { margin: 0; }
+.dim { color: var(--dim); }
+
+/* Header */
+.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+.mark { display: flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font: 800 21px/1 var(--round); }
+.mark img { width: 34px; height: 34px; border-radius: 8px; }
+.top nav { display: flex; gap: 22px; font-size: 16px; }
+.top nav a { color: var(--dim); text-decoration: none; }
+.top nav a:hover { color: var(--paper); }
+@media (max-width: 560px) { .top nav .wide { display: none; } }
+
+/* Hero: one notification rings, the rest stay quiet */
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; padding: 48px 0 88px; }
+.hero h1 { font-size: clamp(42px, 6.4vw, 76px); line-height: 1.02; font-weight: 800; }
+.hero .lead { margin-top: 22px; font-size: 21px; line-height: 1.5; color: var(--dim); max-width: 31em; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin-top: 32px; }
+.store { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; background: var(--indigo); color: #fff; font: 700 17px/1 var(--text); text-decoration: none; }
+.store.soon { background: transparent; border: 1.5px solid var(--line); color: var(--paper); cursor: default; }
+.cta .dim { font-size: 15px; }
+
+.scene { position: relative; min-height: 548px; }
+.phone { position: absolute; right: 0; top: 0; width: 250px; aspect-ratio: 540 / 1173; border-radius: 44px; padding: 10px; background: #050412; box-shadow: 0 0 0 1.5px #2b2860, 0 30px 80px rgba(99, 91, 255, 0.28); }
+.phone img { display: block; width: 100%; height: 100%; border-radius: 35px; }
+.ring { position: absolute; inset: -18px; border-radius: 60px; border: 2px solid var(--glow); opacity: 0; pointer-events: none; }
+.quiet { position: absolute; left: 0; width: 236px; display: grid; gap: 12px; top: 56px; }
+.banner { display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: start; padding: 12px 14px; border-radius: 20px; background: rgba(36, 33, 82, 0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04); color: var(--quiet); font-size: 14px; line-height: 1.35; }
+.banner b { display: block; color: #8e8bb8; font-weight: 600; }
+.banner .app { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: #2a2763; color: #8e8bb8; font: 700 15px/1 var(--round); }
+.banner small { display: block; font-size: 12px; color: #5f5c8a; margin-top: 2px; }
+.legend { margin-top: 6px; font-size: 15px; color: var(--dim); }
+.legend span { color: var(--glow); font-weight: 600; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .banner { animation: drift 0.7s ease-out both; }
+  .banner:nth-child(2) { animation-delay: 0.35s; }
+  .banner:nth-child(3) { animation-delay: 0.7s; }
+  .legend { animation: drift 0.7s 1.05s ease-out both; }
+  .phone { animation: rise 0.8s 1.4s ease-out both; }
+  .ring { animation: pulse 1.6s 2.1s ease-out 3; }
+}
+@keyframes drift { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes pulse { 0% { opacity: 0.85; transform: scale(0.96); } 100% { opacity: 0; transform: scale(1.12); } }
+
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 24px; }
+  .scene { min-height: 548px; max-width: 520px; }
+}
+@media (max-width: 560px) {
+  .scene { min-height: 0; display: grid; gap: 22px; }
+  .phone, .quiet { position: static; width: 100%; }
+  .phone { width: 74%; margin: 0 auto; order: 1; }
+  .quiet { order: 2; }
+}
+
+/* Sections */
+section { padding: 88px 0; }
+section.band { background: var(--deep); }
+.intro { max-width: 40em; }
+.intro p { margin-top: 16px; font-size: 19px; color: var(--dim); }
+
+.steps { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; counter-reset: step; }
+.steps li { counter-increment: step; }
+.steps li::before { content: counter(step); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--indigo); color: #fff; font: 800 20px/1 var(--round); margin-bottom: 18px; }
+.steps p { margin-top: 8px; color: var(--dim); }
+@media (max-width: 800px) { .steps { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Rules, written the way the app writes them */
+.rules { margin-top: 44px; border-radius: 26px; background: var(--raise); padding: 6px 0; max-width: 760px; }
+.rule { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; padding: 18px 22px; }
+.rule + .rule { border-top: 1px solid var(--line); }
+.rule .app { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; background: #2c2875; color: var(--paper); font: 800 17px/1 var(--round); }
+.rule b { font-family: var(--round); font-size: 19px; }
+.rule p { color: var(--dim); font-size: 16px; margin-top: 2px; }
+
+.details { margin-top: 48px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 34px 56px; max-width: 980px; }
+.details p { margin-top: 6px; color: var(--dim); }
+@media (max-width: 720px) { .details { grid-template-columns: 1fr; } }
+
+.shots { margin-top: 44px; display: flex; gap: 22px; overflow-x: auto; padding-bottom: 14px; scroll-snap-type: x mandatory; }
+.shots figure { margin: 0; flex: 0 0 230px; scroll-snap-align: start; }
+.shots img { display: block; width: 100%; height: auto; border-radius: 28px; box-shadow: 0 0 0 1px var(--line); }
+.shots figcaption { margin-top: 12px; font-size: 15px; color: var(--dim); }
+
+.plans { margin-top: 44px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 860px; }
+.plan { border-radius: 26px; padding: 28px; background: var(--raise); }
+.plan.pro { background: linear-gradient(160deg, #3a33c9, #241d86); }
+.plan h3 { font-size: 24px; }
+.plan .price { margin-top: 6px; color: var(--dim); }
+.plan.pro .price { color: #d9d6ff; }
+.plan ul { margin: 18px 0 0; padding-left: 20px; }
+.plan li { margin-bottom: 8px; }
+@media (max-width: 720px) { .plans { grid-template-columns: 1fr; } }
+
+.faq { margin-top: 36px; max-width: 760px; }
+.faq details { border-top: 1px solid var(--line); padding: 18px 0; }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; font: 700 19px/1.35 var(--round); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--glow); font-weight: 400; font-size: 24px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { margin-top: 10px; color: var(--dim); }
+
+footer { padding: 48px 0 64px; border-top: 1px solid var(--line); color: var(--dim); font-size: 15px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
 </style>
 </head>
 <body>
-<main>
-<header>
-  <div class="brand">RingMeFor</div>
-  <h1 id="help">Help and support</h1>
-  <p class="lead">A real alarm for the messages you can't miss, even on Silent or in a Focus.</p>
-  <p class="muted">For iPhone, with iOS 27 or later.</p>
-  <nav class="muted"><a href="#set-up">Set up</a> · <a href="#stopping">Stopping an alarm</a> · <a href="#not-ringing">If it didn't ring</a> · <a href="#pro">Pro</a> · <a href="#questions">Questions</a> · <a href="#contact">Contact</a></nav>
-</header>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="./"><img src="images/icon-256.png" alt="" width="34" height="34">RingMeFor</a>
+    <nav aria-label="Main">
+      <a class="wide" href="#how">How it works</a>
+      <a class="wide" href="#pricing">Pricing</a>
+      <a href="help.html">Help</a>
+    </nav>
+  </header>
 
-<section class="note" aria-labelledby="good-to-know">
-  <h2 id="good-to-know">Good to know</h2>
-  <ul>
-    <li>RingMeFor needs iOS 27 or later. iOS doesn't let apps read other apps' notifications, so a Shortcuts automation, the RingMeFor shortcut, passes them to RingMeFor. You set it up once.</li>
-    <li>Like any automation, it depends on iOS delivering the notification and running the shortcut, and iOS can skip a run, especially when several notifications arrive within seconds. Use RingMeFor as a backup for the messages you care about, not as an emergency, medical or safety alarm. If an app offers Critical Alerts, keep them on.</li>
-    <li>After your iPhone restarts, nothing rings until you unlock it once.</li>
-    <li>Alarms from a RingMeFor that's hidden or requires Face ID never ring.</li>
-  </ul>
+  <main>
+    <div class="hero">
+      <div>
+        <h1>Notification Alarm for Apps</h1>
+        <p class="lead">Your iPhone stays quiet until the message you can't miss arrives. Then RingMeFor rings like an alarm, even on Silent and in a Focus.</p>
+        <div class="cta">
+          <span class="store soon" aria-disabled="true">
+            Coming soon to the App Store
+          </span>
+          <span class="dim">For iPhone with iOS 27. Free for one app.</span>
+        </div>
+      </div>
+
+      <div class="scene" aria-label="Three notifications stay quiet; a message on Messenger rings as an alarm.">
+        <div class="quiet" aria-hidden="true">
+          <div class="banner"><span class="app">S</span><span><b>Slack · #random</b>Anyone up for lunch?<small>Stays quiet</small></span></div>
+          <div class="banner"><span class="app">G</span><span><b>Gmail · Weekly digest</b>Your top stories this week<small>Stays quiet</small></span></div>
+          <div class="banner"><span class="app">O</span><span><b>Outlook · Calendar</b>Room booking confirmed<small>Stays quiet</small></span></div>
+          <p class="legend"><span>Rings:</span> the client call that moved up. Everything else stays quiet.</p>
+        </div>
+        <div class="phone">
+          <span class="ring" aria-hidden="true"></span>
+          <img src="images/lock.jpg" alt="An iPhone Lock Screen with a RingMeFor alarm ringing for a message, with Snooze and slide to stop." width="540" height="1173">
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<section id="how" class="band">
+  <div class="wrap">
+    <div class="intro">
+      <h2>Set it up once, in a few taps</h2>
+      <p>iOS doesn't let apps read other apps' notifications, so RingMeFor works with Apple's Shortcuts app. Its ready-made shortcut hands each notification to RingMeFor, which checks it against your rules right on your iPhone.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>Pick your apps</h3>
+        <p>Slack, Teams, Gmail, WhatsApp, TradingView, PagerDuty and dozens more are ready to go. Any other app works too.</p>
+      </li>
+      <li>
+        <h3>Say what matters</h3>
+        <p>Every notification, or only certain words or people. Add the hours and days it should ring.</p>
+      </li>
+      <li>
+        <h3>Let it ring</h3>
+        <p>A real iOS alarm, with Stop and Snooze, on the Lock Screen, in the Dynamic Island and on your Apple Watch.</p>
+      </li>
+    </ol>
+  </div>
 </section>
 
-<h2 id="set-up">Set up</h2>
-<ol>
-  <li>Open RingMeFor and follow the setup: it explains the alarms, iOS asks whether RingMeFor may set alarms, and you pick the apps that should ring.</li>
-  <li>Tap <strong>Connect</strong> next to an app, then <strong>Add the RingMeFor shortcut</strong>, then <strong>Add Shortcut</strong>. One shortcut covers all your apps. It comes with 25 of them (common chat and email apps, Reminders and Calendar) and can already run while your iPhone is locked; the Connect screen tells you which of your apps are in it and which to add.</li>
-  <li><strong>Don't skip this one.</strong> Shortcuts then shows All Shortcuts. Tap <strong>‹</strong> at the top left to go back to <strong>Library</strong>, tap <strong>Automation</strong>, and turn on the switch next to “When I get a notification from…”. Shared shortcuts always arrive switched off, and RingMeFor hears nothing until you turn it on.</li>
-  <li>If one of your apps isn't in the shortcut, go back to RingMeFor and tap <strong>Open the RingMeFor shortcut</strong>, then <strong>Edit</strong> at the top right. Tap <strong>+</strong> at the end of the apps after “When I receive a notification from”, pick your app, then tap <strong>Done</strong>. Only apps on your iPhone can be picked.</li>
-  <li>Back in RingMeFor, open <strong>Settings → Test with the Phone Locked</strong> and tap <strong>Start the Test</strong>. If iOS asks whether RingMeFor may send notifications, allow it: the test uses a notification from RingMeFor itself. Then lock your iPhone. The first time, go to the Home Screen instead, so you can answer if Shortcuts asks whether RingMeFor can run: tap <strong>Always Allow</strong>, then run the test again with your iPhone locked. A test alarm rings within about 20 seconds; if it doesn't, the screen lists what to check.</li>
-  <li>Wait for a notification from your app, or ask someone to message you there. When RingMeFor hears from it, the app's row on the Home screen says Connected. A message rings only if it matches the app's rule: see <a href="#ready-made-rules">what a ready-made app rings for</a>.</li>
-</ol>
-<p class="muted">There's no need to run the shortcut yourself with ▶. It runs by itself when a notification arrives. Keep its name, RingMeFor: RingMeFor's buttons open it by that name.</p>
-<p class="muted">Remove apps you don't use from the RingMeFor shortcut (open it and tap the apps after “When I receive a notification from”). Every notification from a listed app runs the shortcut, and iOS can skip one that arrives while another is being checked.</p>
+<section>
+  <div class="wrap">
+    <div class="intro">
+      <h2>Rules that read like you'd say them</h2>
+      <p>Each app gets its own rules. A message rings only when one of them matches.</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="app" aria-hidden="true">S</span><div><b>Incidents</b><p>Slack: outage, sev1, down or @here, on weeknights from 10 PM to 7 AM. Rings again until you stop it.</p></div></div>
+      <div class="rule"><span class="app" aria-hidden="true">T</span><div><b>My manager</b><p>Microsoft Teams: anything from Alex Morgan that says ASAP or urgent.</p></div></div>
+      <div class="rule"><span class="app" aria-hidden="true">G</span><div><b>Work travel</b><p>Gmail: gate change, delayed or cancelled.</p></div></div>
+      <div class="rule"><span class="app" aria-hidden="true">D</span><div><b>New orders</b><p>Your delivery app: every notification, during your shift.</p></div></div>
+    </div>
+  </div>
+</section>
 
-<h2 id="add-app">Adding an app later</h2>
-<p>On RingMeFor's Home screen, tap <strong>Add Apps</strong> and pick the app, or type its name under <strong>Another app</strong>. Then tap the app and its <strong>Connect</strong> button, and follow the steps. If the app isn't in the RingMeFor shortcut yet, open the shortcut, tap the apps after “When I receive a notification from”, tap <strong>+</strong>, pick the app, then tap <strong>Done</strong>.</p>
-<p>Free RingMeFor rings for one app, with one rule. You can still add as many apps as you like: the others show <strong>Needs Pro to ring</strong>, and you can choose which app is the one that rings (see <a href="#pro">RingMeFor Pro</a>).</p>
+<section class="band">
+  <div class="wrap">
+    <div class="intro">
+      <h2>Made for the moment it rings</h2>
+    </div>
+    <div class="details">
+      <div><h3>Through Silent and Focus</h3><p>RingMeFor uses iOS's own alarms, the same kind as the Clock app, so it rings when nothing else does.</p></div>
+      <div><h3>A sound for each rule</h3><p>From a loud klaxon to birdsong, so you know what it is before you look.</p></div>
+      <div><h3>Ring again</h3><p>Sleep through it, and it rings up to three more times until you stop it.</p></div>
+      <div><h3>Quiet when you choose</h3><p>Only certain hours and days, a quiet time after an alarm, or one tap to turn it off, from the app, Siri or Control Center.</p></div>
+      <div><h3>It checks itself</h3><p>A test with the phone locked, an optional nightly check, and “Why didn't it ring?” for any app.</p></div>
+      <div><h3>Private by design</h3><p>Notifications are checked on your iPhone. Nothing is sent to the developer or anyone else.</p></div>
+    </div>
+  </div>
+</section>
 
-<h2 id="on-off">Turning it on and off</h2>
-<p>At the top of the Home screen, tap <strong>On</strong>, <strong>For…</strong> (1, 2, 4 or 8 hours) or <strong>Off</strong>. While it's on for a set time, a Live Activity on the Lock Screen shows how long is left, with a <strong>Turn Off</strong> button.</p>
-<p>You can also ask Siri: “Turn on RingMeFor” (for the time in Settings), “Turn on RingMeFor for 2 hours”, “Keep RingMeFor on”, “Turn off RingMeFor” or “Is RingMeFor on?”.</p>
-<p>To add the Control Center controls, open Control Center, tap <strong>+</strong>, then <strong>Add a Control</strong>, and pick RingMeFor. There are two buttons: <strong>Turn On RingMeFor</strong> (for the time in Settings) and <strong>Turn Off RingMeFor</strong>, which also cancels alarms already set. They're buttons rather than a switch, so they don't light up to show whether RingMeFor is on; the Home screen does.</p>
-<p>To skip one app for a while, turn off its switch on the Home screen. Turning RingMeFor or an app off also cancels repeats that are already set.</p>
+<section>
+  <div class="wrap">
+    <div class="intro">
+      <h2>See it</h2>
+    </div>
+    <div class="shots">
+      <figure><img src="images/home.jpg" alt="RingMeFor's Home screen with Slack, Microsoft Teams, Outlook, Gmail and Calendar, each with what it rings for." width="540" height="1173" loading="lazy"><figcaption>Your apps and what each one rings for</figcaption></figure>
+      <figure><img src="images/add-apps.jpg" alt="Adding apps from ready-made sections such as work chat and email." width="540" height="1173" loading="lazy"><figcaption>Ready-made apps, with sensible first rules</figcaption></figure>
+      <figure><img src="images/history.jpg" alt="History of alarms, with when each rang and how it was stopped." width="540" height="1173" loading="lazy"><figcaption>History: what rang, and why</figcaption></figure>
+    </div>
+  </div>
+</section>
 
-<h2 id="stopping">Stopping an alarm</h2>
-<p>Slide <strong>Stop</strong> on the alarm screen, or tap <strong>Stop</strong> if the alarm shows at the top of your unlocked iPhone. Pressing the side button or a volume button silences the alarm too.</p>
-<p><strong>Snooze</strong> silences the alarm, and it rings again after the time in <strong>Settings → Snooze for</strong> (1 to 15 minutes). A countdown shows on the Lock Screen and in the Dynamic Island meanwhile, with <strong>Cancel Snooze</strong> if you don't need it. <strong>Ring again</strong> is different: it's for when you don't answer at all. If you don't tap Stop or Snooze, the alarm rings again, up to 3 more times.</p>
-<p>If you put the alarm screen away, open RingMeFor (or tap the alarm in the Dynamic Island): a ringing or snoozed alarm shows at the top of every screen, with <strong>Stop</strong> and <strong>Snooze</strong>.</p>
-<p><strong>Ring again</strong> (RingMeFor Pro): if the rule has Ring again on, the alarm rings up to 3 more times, titled “Still: …”, until you stop it. Stop or Snooze ends the repeats, and History then shows, for example, “Stopped 12:03, repeats cancelled”. Turning RingMeFor off, turning the app off, removing it or deleting the rule also cancels repeats already set.</p>
-<p>Pressing the side or volume button, swiping the alarm away on an unlocked iPhone, or stopping it on Apple Watch may not end the repeats. If a “Still:” alarm rings after you silenced one, slide Stop on it.</p>
+<section id="pricing" class="band">
+  <div class="wrap">
+    <div class="intro">
+      <h2>Free for one app</h2>
+      <p>Try the whole chain, notification to alarm, before you pay anything.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <p class="price">No time limit</p>
+        <ul>
+          <li>One app, with one rule</li>
+          <li>Words, people and exclusions</li>
+          <li>Stop, Snooze, History, Siri and Control Center</li>
+          <li>The locked-phone test and nightly check</li>
+        </ul>
+      </div>
+      <div class="plan pro">
+        <h3>RingMeFor Pro</h3>
+        <p class="price">One purchase, no subscription</p>
+        <ul>
+          <li>Every app, with unlimited rules</li>
+          <li>Hours and days for each rule</li>
+          <li>Ring again until you stop it</li>
+          <li>Alarm sounds, a different one for each rule</li>
+          <li>The Ring Alarm action for your own shortcuts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h2 id="not-ringing">If it didn't ring</h2>
-<p>In RingMeFor, tap the app on the Home screen, then <strong>Why Didn't It Ring?</strong>. It checks everything RingMeFor can see, and lists what to look at. The usual causes:</p>
-<ul>
-  <li>The app isn't in the RingMeFor shortcut. Open the shortcut, tap <strong>Edit</strong> at the top right, and look at the apps after “When I receive a notification from”.</li>
-  <li>The automation is switched off: <strong>Shortcuts → Library → Automation</strong>.</li>
-  <li>Allow Running When Locked is off, so nothing rings while your iPhone is locked.</li>
-  <li>RingMeFor is hidden or requires Face ID. Alarms from an app that's hidden or requires Face ID never ring. Touch and hold the RingMeFor icon: if the menu says <strong>Don't Require Face ID</strong>, tap it.</li>
-  <li>A Focus, such as Sleep, or Scheduled Summary may be holding back the app's notifications. Allow the app in each Focus you use (<strong>Settings → Focus</strong>), and keep it out of <strong>Settings → Notifications → Scheduled Summary</strong>.</li>
-  <li>The app didn't send a notification. Check <strong>Settings → Notifications</strong> and the app's own settings: some apps only notify for mentions.</li>
-  <li>RingMeFor is off, the app's switch on RingMeFor's Home screen is off, or the app shows <strong>Needs Pro to ring</strong>: free RingMeFor rings for one app.</li>
-  <li>No rule matched, or the rule was outside its hours or in its quiet time. On the app's page, <strong>Test a Message</strong> shows what a message would do. <strong>History</strong> says why each notification did or didn't ring; to see the ones no rule matched, tap <strong>•••</strong>, then <strong>Show Every Notification</strong>.</li>
-  <li>An alarm for that app was still ringing. A new notification from the same app doesn't add a second alarm while one is ringing.</li>
-  <li>iOS didn't run the shortcut. If History has nothing near that time, this is the likely cause: iOS sometimes doesn't run it, especially when several notifications arrive within seconds.</li>
-  <li>Alarms aren't allowed for RingMeFor. The Home screen says so; tap the button there to fix it.</li>
-  <li>Your iPhone restarted and hasn't been unlocked since.</li>
-  <li>Your alarm volume is low. In <strong>Settings → Sounds &amp; Haptics</strong>, check the Ringtone slider and, under <strong>Alarms and Timers</strong>, <strong>Match Ringtone Volume</strong> and its slider.</li>
-</ul>
-<p>Then run <strong>Settings → Test with the Phone Locked</strong> to check the whole chain. To hear an alarm without the shortcut, tap the app, then <strong>Ring a Test Alarm</strong>; it rings in a few seconds.</p>
+<section>
+  <div class="wrap">
+    <div class="intro">
+      <h2>Questions</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>How does it know when a notification arrives?</summary>
+        <p>Through Apple's Shortcuts app. iOS 27 lets a Shortcuts automation run when a notification arrives, and RingMeFor's ready-made shortcut passes the notification on. You add it once; RingMeFor shows each step.</p>
+      </details>
+      <details>
+        <summary>Will it ring when my iPhone is on Silent or in a Focus?</summary>
+        <p>Yes. RingMeFor rings with iOS's own alarms, which sound through Silent mode and Focus, like the Clock app's.</p>
+      </details>
+      <details>
+        <summary>Does it read or keep my messages?</summary>
+        <p>RingMeFor checks each notification against your rules on your iPhone and keeps a short History there. Nothing leaves your iPhone. Read the <a href="privacy.html">privacy policy</a>.</p>
+      </details>
+      <details>
+        <summary>What if it didn't ring?</summary>
+        <p>Open the app and tap “Why didn't it ring?”: it checks the shortcut, the app's rules and the alarm permission. The <a href="help.html">help page</a> covers the rest.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-<h2 id="pro">RingMeFor Pro</h2>
-<p>A one-time purchase, with no subscription, that adds every app, unlimited rules, times and days, Ring again, alarm sounds and the Ring Alarm action for your own shortcuts. Free RingMeFor rings for one app, with one rule; your other apps show <strong>Needs Pro to ring</strong>, and their rules are kept. To make a different app the one that rings, open it in RingMeFor and switch to it; RingMeFor asks you to confirm.</p>
-<p>On a new iPhone, or after reinstalling, Pro usually comes back by itself. If it doesn't, tap <strong>Settings → Restore Purchases</strong>, signed in with the Apple Account you bought it with. Pro isn't shared through Family Sharing.</p>
-<p>Apple handles payments and refunds: to ask for a refund, go to <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. After a refund, RingMeFor goes back to the free version once your iPhone hears about it from the App Store, and keeps your apps and rules.</p>
-
-<h2 id="questions">Questions</h2>
-
-<h3 id="ios-26">I'm on iOS 26.</h3>
-<p>RingMeFor needs iOS 27 or later, because the Shortcuts automation it relies on, “When I get a notification from…”, came with iOS 27. To update, open <strong>Settings → General → Software Update</strong>.</p>
-
-<h3 id="keep-open">Do I need to keep RingMeFor open?</h3>
-<p>No. When a notification arrives from one of the RingMeFor shortcut's apps, iOS runs the shortcut, which starts RingMeFor for a moment to check it.</p>
-
-<h3 id="ready-made-rules">What does a ready-made app ring for?</h3>
-<p>Each ready-made app comes with a first rule, and most ring only for certain words, so an everyday “hi” doesn't ring. For example, Discord rings for “urgent”, “emergency”, “@everyone”, “@here” and “wake up”; most email apps for “urgent”, “asap” and “emergency”; camera apps for people, the doorbell and smoke, but not motion; and payment apps for money you receive, such as “paid you”. Reminders and Calendar ring for every reminder and event. To change what rings, tap the app, then its rule. <strong>Test a Message</strong> on the app's page shows what a message would do.</p>
-
-<h3 id="battery">Does it use much battery?</h3>
-<p>It's made to use little. RingMeFor doesn't run in the background on its own and uses no network. iOS starts it for a moment for each notification from the apps in the RingMeFor shortcut, including apps you haven't added in RingMeFor, so remove apps you don't use from the shortcut. <strong>Settings → Battery</strong> shows how much it uses on your iPhone.</p>
-
-<h3 id="low-power">Does it work in Low Power Mode?</h3>
-<p>It should: Low Power Mode doesn't turn off notifications or alarms, though some apps check for new messages less often in it, and RingMeFor can only ring once the notification arrives. It hasn't been tested on every iPhone, so turn on Low Power Mode and run <strong>Settings → Test with the Phone Locked</strong> to check yours.</p>
-
-<h3 id="focus">Does it ring during Sleep or another Focus?</h3>
-<p>The alarm itself rings through Silent mode and any Focus. It isn't confirmed yet whether iOS runs the RingMeFor shortcut for a notification that your Focus silences. To be safe, allow the apps you rely on in each Focus you use, such as Sleep (<strong>Settings → Focus</strong>), and keep them out of <strong>Settings → Notifications → Scheduled Summary</strong>. That also lets their other notifications through in that Focus. For the nightly check, allow RingMeFor too.</p>
-
-<h3 id="allow-running">What does Allow Running When Locked do?</h3>
-<p>It lets the RingMeFor shortcut run while your iPhone is locked, which is when you need the alarm most. Without it, nothing rings while your iPhone is locked. It applies only to this shortcut, which does one thing: pass each notification to RingMeFor. The shared shortcut comes with it on. To check: in Shortcuts, open the RingMeFor shortcut, tap <strong>Edit</strong>, then <strong>ⓘ</strong> at the bottom, then <strong>Privacy</strong>.</p>
-
-<h3 id="restart">My iPhone restarted. Do I need to do anything?</h3>
-<p>Unlock it once. After a restart, iOS keeps RingMeFor's data locked until you first unlock your iPhone, so nothing rings until then. For the first few minutes after that, while iOS finishes starting up, it may pass notifications to RingMeFor late, so the first alarm can come a few minutes after the message. iPhones restart for automatic iOS updates, when the battery runs out, and after about 72 hours without being unlocked. If you rely on RingMeFor overnight, turn off automatic iOS updates (<strong>Settings → General → Software Update → Automatic Updates</strong>), or unlock your iPhone after an update.</p>
-
-<h3 id="after-update">It stopped working after an iOS update.</h3>
-<p>Unlock your iPhone once, then run <strong>Settings → Test with the Phone Locked</strong>. If no alarm rings, the screen lists what to check: RingMeFor in the shortcut's apps, the automation switch (<strong>Shortcuts → Library → Automation</strong>) and Allow Running When Locked. If it still doesn't work, add the shortcut again: tap your app on RingMeFor's Home screen, then <strong>Set Up the Connection Again</strong>, <strong>I don't have the RingMeFor shortcut</strong> and <strong>Add the RingMeFor shortcut</strong>, and add your apps to it if they aren't listed. Then delete the old copy in Shortcuts. To hear about it sooner next time, turn on the nightly check on the same test screen.</p>
-
-<h3 id="action-unavailable">Check Notification shows as unavailable in the shortcut.</h3>
-<p>On some iPhones with iOS 27, apps' actions have gone missing from Shortcuts for a while. Open RingMeFor once, then restart your iPhone. If it still shows, try again the next day, and <a href="#contact">email me</a> if it doesn't clear.</p>
-
-<h3 id="one-alarm">Two messages arrived, but only one alarm rang.</h3>
-<p>While an alarm for an app is ringing, more notifications from that app don't add a second alarm; once you stop it, the next one rings. A rule's quiet time after an alarm also holds it back for a while. And iOS sometimes doesn't run the shortcut, especially when several notifications arrive within seconds. <strong>History</strong> shows which notifications reached RingMeFor and what it did with each (tap <strong>•••</strong>, then <strong>Show Every Notification</strong>).</p>
-
-<h3 id="wrong-message">It rang for the wrong message.</h3>
-<p><strong>History</strong> shows which rule rang and the word or person that matched. Open that rule and add a word under <strong>Never ring if it mentions</strong>, turn on <strong>Match whole words only</strong>, or switch it from <strong>Every notification</strong> to <strong>Only certain words or people</strong>. <strong>Test a Message</strong> on the app's page shows what a message would do.</p>
-
-<h3 id="too-many">Why do I get so many alarms?</h3>
-<p>Every matching notification rings, so a rule set to <strong>Every notification</strong> rings for every message from that app. Open the rule and choose <strong>Only certain words or people</strong>, or set <strong>Quiet time after an alarm</strong>. For a break, tap <strong>Off</strong> on the Home screen, or turn off that app's switch.</p>
-
-<h3 id="person-rule">A person rule didn't ring.</h3>
-<p>A person counts when their name is the notification's sender or title, or starts a line of the message, like “Alice: are you up?” in a group chat. A message that only mentions the name doesn't count. Capital letters and accents don't matter. <strong>Test a Message</strong> on the app's page shows what a message would do.</p>
-
-<h3 id="lock-screen">Does the alarm show my messages on the Lock Screen?</h3>
-<p>Not unless you turn that on. For chat and email apps, the alarm shows the app and who the message is from, such as “Discord · Alice”. For reminders, calendar, alerts, trading, payments and cameras, it shows the app and the rule's name, such as “Reminders · Due reminders”. Turn on <strong>Settings → Show the message</strong> to add the first line: “Discord · Alice: Are you up?”. Alarms show on the Lock Screen, in StandBy and on a paired Apple Watch even if you hide notification previews, so leave Show the message off if others can see your iPhone.</p>
-
-<h3 id="apple-watch">Does it work with Apple Watch or CarPlay?</h3>
-<p>If your iPhone is paired with an Apple Watch, the alarm also shows on the watch, with Stop and Snooze. It isn't confirmed yet whether Stop on the watch also ends Ring again's repeats; if a “Still:” alarm rings afterwards, stop it on your iPhone. RingMeFor has no CarPlay app of its own, and how its alarms show in CarPlay hasn't been tested.</p>
-
-<h3 id="nightly-check">Why does RingMeFor send me a notification every night?</h3>
-<p>That's the nightly check, if you turned it on. At 9:00 PM, or the time you chose, RingMeFor sends itself a notification without a sound, and the RingMeFor shortcut passes it back. If it doesn't come back within 5 minutes, you get a warning, so you find out before you rely on it. To stop it, turn the nightly check off on the <strong>Test with the Phone Locked</strong> screen. Don't turn off RingMeFor's notifications instead: the check needs them to warn you.</p>
-
-<h3 id="new-iphone">I got a new iPhone, restored a backup or reinstalled RingMeFor.</h3>
-<p>If you restored a backup, your apps, rules and History come back; otherwise, set RingMeFor up again. Pro comes back with your Apple Account; if it doesn't, tap <strong>Settings → Restore Purchases</strong>. On a new or restored iPhone, the RingMeFor automation may arrive switched off even though RingMeFor still says Connected. Turn it on in <strong>Shortcuts → Library → Automation</strong>, check Allow Running When Locked (open the shortcut, tap <strong>ⓘ</strong>, then <strong>Privacy</strong>), then run <strong>Settings → Test with the Phone Locked</strong>. If you add the shortcut again, delete the old copy, or each notification is checked twice.</p>
-
-<h3 id="second-device">Can I use it on an iPad, or on more than one iPhone?</h3>
-<p>RingMeFor is made for iPhone. It may install on an iPad, but it isn't made or tested for one. On a second iPhone, set RingMeFor up there too: apps and rules aren't shared between iPhones. If you use iCloud for Shortcuts, the RingMeFor shortcut may already be there with its automation switched off: turn it on and check Allow Running When Locked. Pro works on every iPhone signed in with the Apple Account you bought it with.</p>
-
-<h3 id="shortcut-twice">I added the shortcut twice.</h3>
-<p>Keep one: with two copies, each notification reaches RingMeFor twice, and Home shows a note about it. This can happen when you add the link again after reinstalling RingMeFor, even if Shortcuts offers to replace the old one. In Shortcuts, tap <strong>Library</strong>, then <strong>Automation</strong>, and swipe left on the extra “When I get a notification from…” to delete it. If All Shortcuts shows two RingMeFor shortcuts, touch and hold the one you don't need, tap <strong>Delete</strong>, and make sure the one you keep is named RingMeFor. After reinstalling RingMeFor, you don't need to add the shortcut again: the one you have keeps working.</p>
-
-<h3 id="shortcut-wont-open">Nothing happens when I tap Add the RingMeFor shortcut or Open the RingMeFor shortcut.</h3>
-<p>Both open Apple's Shortcuts app, so check that it's installed; if you deleted it, get Shortcuts again from the App Store. <strong>Open the RingMeFor shortcut</strong> finds the shortcut by its name: if you renamed it, open Shortcuts, tap <strong>Library</strong> and open it from there, or rename it back to RingMeFor.</p>
-
-<h3 id="app-added">An app I didn't add appeared in RingMeFor.</h3>
-<p>The RingMeFor shortcut passed a notification from an app RingMeFor doesn't know, so RingMeFor added it by name, with no rules. It doesn't ring, and none of its messages are kept until you add a rule to it or turn it on. This happens when you add an app to the shortcut yourself, or when iOS reports an app under another name, such as another app from the same company or the app's name in your iPhone's language. If you don't want it, open it and tap the <strong>Remove</strong> button at the bottom of its page: RingMeFor won't add it again.</p>
-
-<h3 id="unknown-app">History shows “Unknown app”.</h3>
-<p>The shortcut passed a notification without saying which app it came from, or with something that looks like a message instead of an app's name. History shows the first 40 characters of what arrived as the app's name, so you can fix the shortcut; the message isn't kept. In a shortcut you made yourself, set the Check Notification action's <strong>App</strong> to the notification's App; the ready-made RingMeFor shortcut already does this.</p>
-
-<h3 id="history-unexpected">History shows a notification I never got.</h3>
-<p>RingMeFor can't tell where a notification really came from: any shortcut in your Shortcuts library can pass it any text as if it were a notification. Check <strong>Shortcuts → Library</strong> for shortcuts you don't recognize, and only add shortcuts you trust.</p>
-
-<h3 id="messages">Does RingMeFor read my messages?</h3>
-<p>It sees only the notifications the RingMeFor shortcut passes it, from the apps listed in the shortcut, and only on your iPhone. It checks the ones from apps you added in RingMeFor against your rules, and History keeps up to 140 characters of each. Notifications from ready-made apps you haven't added are ignored and not kept, and an app RingMeFor added by itself keeps none of its messages until you give it a rule or turn it on. To keep an app's notifications from reaching RingMeFor at all, remove it from the shortcut's apps. Nothing is sent to the developer or anyone else: see the <a href="privacy.html">privacy policy</a>.</p>
-
-<h3 id="free-version">Why does the free version ring for only one app?</h3>
-<p>One app with one rule, with no time limit, is enough to check that the whole chain rings on your iPhone before you pay. RingMeFor Pro, a one-time purchase, rings for all your apps and adds unlimited rules, times and days, Ring again, alarm sounds and the Ring Alarm action. Either way you can add as many apps as you like; in the free version the others show <strong>Needs Pro to ring</strong>.</p>
-
-<h3 id="calls-texts">Can it ring for calls, texts or iMessages?</h3>
-<p>For calls and messages from people who matter, iOS has Emergency Bypass, which lets them sound even in Silent mode or a Focus: in <strong>Contacts</strong>, open the person, tap <strong>Edit</strong>, then <strong>Ringtone</strong> or <strong>Text Tone</strong>, and turn on <strong>Emergency Bypass</strong>. With RingMeFor Pro, you can also add RingMeFor's <strong>Ring Alarm</strong> action to a Shortcuts automation of your own, such as one that runs when you get a message from someone.</p>
-
-<h3 id="internet">Does it need an internet connection? What about abroad or with a VPN?</h3>
-<p>RingMeFor itself doesn't use the internet, so roaming or a VPN doesn't change what it does. The apps you watch need a connection to get their notifications, and buying or restoring Pro needs the App Store. Rules with times follow your iPhone's clock, so they move with your time zone.</p>
-
-<h3 id="pause">How do I pause it, for example for the weekend?</h3>
-<p>Tap <strong>Off</strong> on the Home screen, or say “Turn off RingMeFor”, and turn it back on when you're ready. To pause one app, turn off its switch on the Home screen. With RingMeFor Pro, a rule can ring only at certain times and on certain days, such as weekdays.</p>
-
-<h3 id="siri">Siri says it can't find RingMeFor.</h3>
-<p>Say the name as three words, “Ring Me For”: for example, “Turn on Ring Me For”. If Siri still doesn't find it, open RingMeFor once, then try again. The buttons on RingMeFor's Home screen always work.</p>
-
-<h3 id="language">Is RingMeFor in my language?</h3>
-<p>Its screens are in English. Your rules work in any language: capital letters and accents don't matter, and words in Chinese, Japanese and Thai match inside sentences.</p>
-
-<h3 id="accessibility">Accessibility</h3>
-<p>RingMeFor's alarms are iOS alarms, with Stop and Snooze, and they also show on a paired Apple Watch. Its screens follow Dark Mode. If something in RingMeFor is hard to use with VoiceOver, larger text or another accessibility setting, please <a href="#contact">email me</a>: it helps me fix it.</p>
-
-<h2 id="removing">Removing RingMeFor</h2>
-<p>Delete the RingMeFor shortcut too, or its automation keeps running for every notification from its apps, with nothing to pass them to: in Shortcuts, touch and hold <strong>RingMeFor</strong>, then tap <strong>Delete</strong>. Deleting RingMeFor deletes your apps, rules and History from your iPhone; your own backups may keep a copy until they're replaced. To clear only History, tap <strong>History</strong>, then <strong>•••</strong>, then <strong>Clear History</strong>.</p>
-
-<h2 id="contact">Contact</h2>
-<p>RingMeFor is made by Lance Mikaelo Enriquez (Philippines). For help, problems or ideas, use <strong>Settings → About → Email Support</strong> in RingMeFor: it opens your mail app with the versions and RingMeFor's status filled in, nothing from your notifications, and you can edit it before sending. Or email <a href="mailto:lancemikaelo.enriquez@gmail.com?subject=RingMeFor%20support">lancemikaelo.enriquez@gmail.com</a>.</p>
-<p>If something isn't working, say which app it's about and what happened. If you write from somewhere else, please include your iPhone model, iOS version and RingMeFor version (Settings → About). A screenshot of Why Didn't It Ring? or History helps too; hide anything private in it first.</p>
-<p>RingMeFor keeps everything on your iPhone; read the <a href="privacy.html">privacy policy</a>.</p>
-
-<footer>Last updated November 8, 2026 for RingMeFor 1.0 · <a href="privacy.html">Privacy policy</a></footer>
-</main>
+<footer>
+  <div class="wrap">
+    <nav aria-label="More">
+      <a href="help.html">Help and support</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="mailto:lancemikaelo.enriquez@gmail.com">lancemikaelo.enriquez@gmail.com</a>
+    </nav>
+    <p>© 2026 Lance Mikaelo Enriquez</p>
+  </div>
+</footer>
 </body>
 </html>

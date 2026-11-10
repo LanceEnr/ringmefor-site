@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A RingMeFor rule</title>
+<meta name="description" content="A rule someone shared from RingMeFor. Open it in RingMeFor to add it.">
+<meta name="theme-color" content="#0b0a22">
+<meta name="robots" content="noindex">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<style>
+:root {
+  --night: #0b0a22;
+  --raise: #1b184d;
+  --indigo: #635bff;
+  --glow: #8a84ff;
+  --paper: #f3f2ff;
+  --dim: #b0add9;
+  --line: rgba(138, 132, 255, 0.2);
+  --round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--paper); font: 18px/1.55 -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 600px; margin: 0 auto; padding: 28px 16px 64px; }
+a { color: var(--glow); }
+a:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; border-radius: 6px; }
+.mark { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font: 800 21px/1 var(--round); }
+.mark img { width: 34px; height: 34px; border-radius: 8px; }
+h1 { font: 800 34px/1.1 var(--round); letter-spacing: -0.015em; margin: 36px 0 8px; }
+.for { color: var(--dim); margin: 0; }
+dl { margin: 28px 0 0; border-radius: 22px; background: var(--raise); padding: 4px 20px; }
+dl div { padding: 14px 0; }
+dl div + div { border-top: 1px solid var(--line); }
+dt { font-size: 15px; color: var(--dim); }
+dd { margin: 2px 0 0; }
+.actions { display: grid; gap: 12px; margin-top: 28px; }
+.button { display: block; text-align: center; padding: 15px 20px; border-radius: 999px; font-weight: 700; text-decoration: none; }
+.button.main { background: var(--indigo); color: #fff; }
+.button.other { border: 1.5px solid var(--line); color: var(--paper); }
+.note { margin-top: 18px; color: var(--dim); font-size: 15px; }
+.missing h1 { margin-top: 36px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="mark" href="./"><img src="images/icon-256.png" alt="" width="34" height="34">RingMeFor</a>
+  <div id="rule" hidden>
+    <h1 id="name"></h1>
+    <p class="for" id="for"></p>
+    <dl id="details"></dl>
+    <div class="actions">
+      <a class="button main" id="open" href="#">Add to RingMeFor</a>
+      <a class="button other" href="./">What's RingMeFor?</a>
+    </div>
+    <p class="note">Adding needs RingMeFor on this iPhone. You can change the rule after you add it, and it rings only for the app you add it to.</p>
+  </div>
+  <div id="missing" class="missing" hidden>
+    <h1>This link has no rule in it</h1>
+    <p class="for">Ask whoever shared it to share the rule again from RingMeFor: open the rule, then Share Rule.</p>
+  </div>
+</main>
+<script>
+(function () {
+  // The rule is the base64url JSON after "#d=", written by RuleLink.encode in the app.
+  var sounds = { standard: "Standard alarm", signature: "RingMeFor", siren: "Hi-Lo", klaxon: "Reactor", buzzer: "Hornet", beep: "Bedside", pulse: "On Call", oldPhone: "Rotary", eightBit: "Arcade", rise: "Liftoff", melody: "Kalimba", chime: "Intercom", clean: "Boardroom", birds: "Dawn Chorus", silent: "Vibrate only" };
+  var match = /(?:^|&)d=([A-Za-z0-9_-]+)/.exec(location.hash.slice(1));
+  var rule = null;
+  if (match) {
+    try {
+      var base64 = match[1].replace(/-/g, "+").replace(/_/g, "/");
+      while (base64.length % 4) base64 += "=";
+      var bytes = Uint8Array.from(atob(base64), function (c) { return c.charCodeAt(0); });
+      rule = JSON.parse(new TextDecoder().decode(bytes));
+    } catch (error) {
+      rule = null;
+    }
+  }
+  if (!rule || typeof rule !== "object") {
+    document.getElementById("missing").hidden = false;
+    return;
+  }
+  function list(items) {
+    return Array.isArray(items) ? items.filter(function (x) { return typeof x === "string" && x; }).join(", ") : "";
+  }
+  function time(minute) {
+    var date = new Date(2000, 0, 1, Math.floor(minute / 60), minute % 60);
+    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+  var rows = [];
+  if (rule.mode === "everything") {
+    rows.push(["Rings for", "Every notification"]);
+  } else {
+    if (list(rule.keywords)) rows.push(["Words", list(rule.keywords)]);
+    if (list(rule.people)) rows.push(["From", list(rule.people)]);
+    if (list(rule.patterns)) rows.push(["Patterns", list(rule.patterns)]);
+  }
+  if (list(rule.exclusions)) rows.push(["Never if it mentions", list(rule.exclusions)]);
+  if (rule.threshold && rule.threshold.count) {
+    rows.push(["Only when", rule.threshold.count + " times in " + rule.threshold.minutes + " minutes" + (rule.threshold.samePerson ? ", from the same person" : "")]);
+  }
+  if (rule.activeHours && rule.activeHours.enabled) {
+    rows.push(["Hours", time(rule.activeHours.startMinute) + " to " + time(rule.activeHours.endMinute)]);
+  }
+  if (rule.repeatUntilStopped) rows.push(["Ring again", "Every " + rule.repeatIntervalMinutes + " minutes until stopped"]);
+  if (rule.sound && sounds[rule.sound]) rows.push(["Sound", sounds[rule.sound]]);
+  if (rule.countdownSeconds) rows.push(["Counts down first", rule.countdownSeconds + " seconds"]);
+  if (rule.vibrateFirst) rows.push(["Vibrates first", "Yes"]);
+
+  document.getElementById("name").textContent = rule.name || "Shared rule";
+  document.getElementById("for").textContent = "A rule for " + (rule.appName || "an app") + ", shared from RingMeFor.";
+  var details = document.getElementById("details");
+  rows.forEach(function (row) {
+    var div = document.createElement("div");
+    var dt = document.createElement("dt");
+    var dd = document.createElement("dd");
+    dt.textContent = row[0];
+    dd.textContent = row[1];
+    div.appendChild(dt);
+    div.appendChild(dd);
+    details.appendChild(div);
+  });
+  if (!rows.length) details.hidden = true;
+  document.getElementById("open").href = "ringmefor://rule?d=" + match[1];
+  document.title = (rule.name || "Shared rule") + " · RingMeFor";
+  document.getElementById("rule").hidden = false;
+})();
+</script>
+</body>
+</html>
