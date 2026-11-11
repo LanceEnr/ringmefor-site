@@ -3,17 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="apple-itunes-app" content="app-id=6828677351">
-<title>RingMeFor: Notification Alarm for Apps</title>
-<meta name="description" content="RingMeFor rings a real alarm on your iPhone when a notification you can't miss arrives, even on Silent and in a Focus. Everything else stays quiet.">
-<meta property="og:title" content="RingMeFor: Notification Alarm for Apps">
-<meta property="og:description" content="Your iPhone stays quiet until the message you can't miss arrives. Then it rings like an alarm.">
-<meta property="og:image" content="https://lanceenr.github.io/ringmefor-site/images/icon-256.png">
-<meta name="theme-color" content="#0b0a22">
+<title>RingMeFor: notification alarm for iPhone</title>
+<meta name="description" content="RingMeFor is a notification alarm for iPhone. Choose the apps, words and people that matter, and it rings a real alarm for them, even on Silent and in a Focus. Everything else stays quiet.">
+<!-- config:urls --><link rel="canonical" href="https://lanceenr.github.io/ringmefor-site/"><meta property="og:url" content="https://lanceenr.github.io/ringmefor-site/"><meta property="og:image" content="https://lanceenr.github.io/ringmefor-site/images/og.png"><!-- /config:urls -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="RingMeFor: notification alarm for iPhone">
+<meta property="og:description" content="Ring me for what can't wait. RingMeFor stays quiet until the message you can't miss arrives, then rings a real alarm, even on Silent and in a Focus.">
+<meta name="twitter:card" content="summary_large_image">
+<!-- config:smart-banner --><meta name="apple-itunes-app" content="app-id=6828677351"><!-- /config:smart-banner -->
+<meta name="theme-color" content="#f2f2f7">
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
 <link rel="icon" href="images/favicon-64.png" sizes="64x64">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="preload" href="fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
 <script>
+document.documentElement.classList.add("js");
 // Links to help topics used to point here (index.html#restart): they open the help page now.
 (function () {
   var topics = ["help","good-to-know","set-up","add-app","on-off","stopping","not-ringing","pro","questions","ios-26","keep-open","ready-made-rules","battery","low-power","focus","allow-running","restart","after-update","action-unavailable","one-alarm","wrong-message","too-many","person-rule","lock-screen","apple-watch","nightly-check","new-iphone","second-device","shortcut-twice","shortcut-wont-open","app-added","unknown-app","history-unexpected","messages","free-version","calls-texts","internet","pause","siri","language","accessibility","removing","contact"];
@@ -21,290 +26,188 @@
   if (topic && topics.indexOf(topic) >= 0) location.replace("help.html#" + topic);
 })();
 </script>
-<style>
-:root {
-  --night: #0b0a22;
-  --deep: #12103a;
-  --raise: #1b184d;
-  --indigo: #635bff;
-  --glow: #8a84ff;
-  --paper: #f3f2ff;
-  --dim: #b0add9;
-  --quiet: #6e6b98;
-  --line: rgba(138, 132, 255, 0.2);
-  --round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
-  --text: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body {
-  margin: 0;
-  background: var(--night);
-  color: var(--paper);
-  font: 18px/1.55 var(--text);
-  -webkit-font-smoothing: antialiased;
-}
-a { color: var(--glow); }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--glow); outline-offset: 3px; border-radius: 6px; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
-h1, h2, h3 { font-family: var(--round); letter-spacing: -0.015em; margin: 0; }
-h2 { font-size: clamp(30px, 4.2vw, 44px); line-height: 1.1; font-weight: 800; }
-h3 { font-size: 20px; line-height: 1.3; font-weight: 700; }
-p { margin: 0; }
-.dim { color: var(--dim); }
-
-/* Header */
-.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
-.mark { display: flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font: 800 21px/1 var(--round); }
-.mark img { width: 34px; height: 34px; border-radius: 8px; }
-.top nav { display: flex; gap: 22px; font-size: 16px; }
-.top nav a { color: var(--dim); text-decoration: none; }
-.top nav a:hover { color: var(--paper); }
-@media (max-width: 560px) { .top nav .wide { display: none; } }
-
-/* Hero: one notification rings, the rest stay quiet */
-.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; padding: 48px 0 88px; }
-.hero h1 { font-size: clamp(42px, 6.4vw, 76px); line-height: 1.02; font-weight: 800; }
-.hero .lead { margin-top: 22px; font-size: 21px; line-height: 1.5; color: var(--dim); max-width: 31em; }
-.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin-top: 32px; }
-.store { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; background: var(--indigo); color: #fff; font: 700 17px/1 var(--text); text-decoration: none; }
-.badge { display: inline-block; border-radius: 9px; }
-.badge img { display: block; height: 44px; width: auto; }
-.store.soon { background: transparent; border: 1.5px solid var(--line); color: var(--paper); cursor: default; }
-.cta .dim { font-size: 15px; }
-
-.scene { position: relative; min-height: 548px; }
-.phone { position: absolute; right: 0; top: 0; width: 250px; aspect-ratio: 540 / 1173; border-radius: 44px; padding: 10px; background: #050412; box-shadow: 0 0 0 1.5px #2b2860, 0 30px 80px rgba(99, 91, 255, 0.28); }
-.phone img { display: block; width: 100%; height: 100%; border-radius: 35px; }
-.ring { position: absolute; inset: -18px; border-radius: 60px; border: 2px solid var(--glow); opacity: 0; pointer-events: none; }
-.quiet { position: absolute; left: 0; width: 236px; display: grid; gap: 12px; top: 56px; }
-.banner { display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: start; padding: 12px 14px; border-radius: 20px; background: rgba(36, 33, 82, 0.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04); color: var(--quiet); font-size: 14px; line-height: 1.35; }
-.banner b { display: block; color: #8e8bb8; font-weight: 600; }
-.banner .app { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: #2a2763; color: #8e8bb8; font: 700 15px/1 var(--round); }
-.banner small { display: block; font-size: 12px; color: #5f5c8a; margin-top: 2px; }
-.legend { margin-top: 6px; font-size: 15px; color: var(--dim); }
-.legend span { color: var(--glow); font-weight: 600; }
-
-@media (prefers-reduced-motion: no-preference) {
-  .banner { animation: drift 0.7s ease-out both; }
-  .banner:nth-child(2) { animation-delay: 0.35s; }
-  .banner:nth-child(3) { animation-delay: 0.7s; }
-  .legend { animation: drift 0.7s 1.05s ease-out both; }
-  .phone { animation: rise 0.8s 1.4s ease-out both; }
-  .ring { animation: pulse 1.6s 2.1s ease-out 3; }
-}
-@keyframes drift { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes rise { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
-@keyframes pulse { 0% { opacity: 0.85; transform: scale(0.96); } 100% { opacity: 0; transform: scale(1.12); } }
-
-@media (max-width: 1100px) {
-  .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 24px; }
-  .scene { min-height: 548px; max-width: 520px; }
-}
-@media (max-width: 560px) {
-  .scene { min-height: 0; display: grid; gap: 22px; }
-  .phone, .quiet { position: static; width: 100%; }
-  .phone { width: 74%; margin: 0 auto; order: 1; }
-  .quiet { order: 2; }
-}
-
-/* Sections */
-section { padding: 88px 0; }
-section.band { background: var(--deep); }
-.intro { max-width: 40em; }
-.intro p { margin-top: 16px; font-size: 19px; color: var(--dim); }
-
-.steps { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; counter-reset: step; }
-.steps li { counter-increment: step; }
-.steps li::before { content: counter(step); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--indigo); color: #fff; font: 800 20px/1 var(--round); margin-bottom: 18px; }
-.steps p { margin-top: 8px; color: var(--dim); }
-@media (max-width: 800px) { .steps { grid-template-columns: 1fr; gap: 28px; } }
-
-/* Rules, written the way the app writes them */
-.rules { margin-top: 44px; border-radius: 26px; background: var(--raise); padding: 6px 0; max-width: 760px; }
-.rule { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; padding: 18px 22px; }
-.rule + .rule { border-top: 1px solid var(--line); }
-.rule .app { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; background: #2c2875; color: var(--paper); font: 800 17px/1 var(--round); }
-.rule b { font-family: var(--round); font-size: 19px; }
-.rule p { color: var(--dim); font-size: 16px; margin-top: 2px; }
-
-.details { margin-top: 48px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 34px 56px; max-width: 980px; }
-.details p { margin-top: 6px; color: var(--dim); }
-@media (max-width: 720px) { .details { grid-template-columns: 1fr; } }
-
-.shots { margin-top: 44px; display: flex; gap: 22px; overflow-x: auto; padding-bottom: 14px; scroll-snap-type: x mandatory; }
-.shots figure { margin: 0; flex: 0 0 230px; scroll-snap-align: start; }
-.shots img { display: block; width: 100%; height: auto; border-radius: 28px; box-shadow: 0 0 0 1px var(--line); }
-.shots figcaption { margin-top: 12px; font-size: 15px; color: var(--dim); }
-
-.plans { margin-top: 44px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 860px; }
-.plan { border-radius: 26px; padding: 28px; background: var(--raise); }
-.plan.pro { background: linear-gradient(160deg, #3a33c9, #241d86); }
-.plan h3 { font-size: 24px; }
-.plan .price { margin-top: 6px; color: var(--dim); }
-.plan.pro .price { color: #d9d6ff; }
-.plan ul { margin: 18px 0 0; padding-left: 20px; }
-.plan li { margin-bottom: 8px; }
-@media (max-width: 720px) { .plans { grid-template-columns: 1fr; } }
-
-.faq { margin-top: 36px; max-width: 760px; }
-.faq details { border-top: 1px solid var(--line); padding: 18px 0; }
-.faq details:last-child { border-bottom: 1px solid var(--line); }
-.faq summary { cursor: pointer; font: 700 19px/1.35 var(--round); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; color: var(--glow); font-weight: 400; font-size: 24px; line-height: 1; }
-.faq details[open] summary::after { content: "–"; }
-.faq details p { margin-top: 10px; color: var(--dim); }
-
-footer { padding: 48px 0 64px; border-top: 1px solid var(--line); color: var(--dim); font-size: 15px; }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
-footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
-</style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <a class="mark" href="./"><img src="images/icon-256.png" alt="" width="34" height="34">RingMeFor</a>
-    <nav aria-label="Main">
-      <a class="wide" href="#how">How it works</a>
-      <a class="wide" href="#pricing">Pricing</a>
-      <a href="help.html">Help</a>
-    </nav>
-  </header>
 
-  <main>
-    <div class="hero">
-      <div>
-        <h1>Notification Alarm for Apps</h1>
-        <p class="lead">Your iPhone stays quiet until the message you can't miss arrives. Then RingMeFor rings like an alarm, even on Silent and in a Focus.</p>
-        <div class="cta">
-          <a class="badge" href="https://apps.apple.com/us/app/ringmefor-notification-alarm/id6828677351"><img src="images/app-store-badge.svg" width="132" height="44" alt="Download on the App Store"></a>
-          <span class="dim">For iPhone with iOS 27. Free for one app.</span>
-        </div>
-      </div>
-
-      <div class="scene" aria-label="Three notifications stay quiet; a message on Messenger rings as an alarm.">
-        <div class="quiet" aria-hidden="true">
-          <div class="banner"><span class="app">S</span><span><b>Slack · #random</b>Anyone up for lunch?<small>Stays quiet</small></span></div>
-          <div class="banner"><span class="app">G</span><span><b>Gmail · Weekly digest</b>Your top stories this week<small>Stays quiet</small></span></div>
-          <div class="banner"><span class="app">O</span><span><b>Outlook · Calendar</b>Room booking confirmed<small>Stays quiet</small></span></div>
-          <p class="legend"><span>Rings:</span> the client call that moved up. Everything else stays quiet.</p>
-        </div>
-        <div class="phone">
-          <span class="ring" aria-hidden="true"></span>
-          <img src="images/lock.jpg" alt="An iPhone Lock Screen with a RingMeFor alarm ringing for a message, with Snooze and slide to stop." width="540" height="1173">
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<section id="how" class="band">
+<section class="first" data-state="quiet" aria-labelledby="sentence">
   <div class="wrap">
-    <div class="intro">
-      <h2>Set it up once, in a few taps</h2>
-      <p>iOS doesn't let apps read other apps' notifications, so RingMeFor works with Apple's Shortcuts app. Its ready-made shortcut hands each notification to RingMeFor, which checks it against your rules right on your iPhone.</p>
+    <header class="site-header">
+      <a class="wordmark" href="./">RingMeFor</a>
+      <nav aria-label="Main">
+        <a href="rulebook.html">Rulebook</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#price">Price</a>
+        <a href="help.html">Help</a>
+      </nav>
+    </header>
+
+    <div class="first-body">
+      <div class="sentence-box">
+        <h1 class="sentence" id="sentence">
+          <label for="word">Ring me for</label>
+          <span class="word-field">“<span class="field-wrap"><input id="word" name="word" type="text" value="outage" maxlength="28" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done"><span class="caret" aria-hidden="true"></span></span>”</span>
+          <span class="word-ring" hidden></span>
+        </h1>
+      </div>
+
+      <div class="demo">
+        <p class="sr-only">An example: three notifications stay quiet, and the one with your word in it rings an alarm.</p>
+        <ol class="stack" aria-hidden="true">
+          <li class="slab static"><span class="tile">S</span><span class="app">Slack, #random</span><span class="note">stayed quiet</span><span class="msg">Anyone up for lunch?</span></li>
+          <li class="slab static"><span class="tile">G</span><span class="app">Gmail</span><span class="note">stayed quiet</span><span class="msg">Weekly digest: your top stories</span></li>
+          <li class="slab static"><span class="tile">O</span><span class="app">Outlook</span><span class="note">stayed quiet</span><span class="msg">Room booking confirmed</span></li>
+          <li class="slab static ringing"><span class="tile">S</span><span class="app">Slack, #incidents</span><span class="note"></span><span class="msg">Checkout outage, paging on call</span></li>
+        </ol>
+        <div class="alarm-row" hidden>
+          <button class="button stop" type="button">Stop</button>
+          <button class="button secondary snooze" type="button">Snooze</button>
+          <button class="button secondary hear" type="button" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h2.5L8 3v10L4.5 10H2z" fill="currentColor"/><path d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.5 3.5a6.3 6.3 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Hear it</button>
+          <p class="invite" tabindex="-1" hidden></p>
+        </div>
+        <p class="sr-only" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="pitch">
+        <p>RingMeFor is a notification alarm for iPhone. It stays quiet until the message you can't miss arrives, then rings a real alarm, even on Silent and in a Focus.</p>
+        <p class="store"><!-- config:store --><a href="https://apps.apple.com/us/app/ringmefor-notification-alarm/id6828677351"><img src="images/app-store-badge.svg" width="120" height="40" alt="Download on the App Store"></a><!-- /config:store --></p>
+        <p class="small">iPhone with iOS 27. Free for one app.</p>
+      </div>
     </div>
-    <ol class="steps">
-      <li>
-        <h3>Pick your apps</h3>
-        <p>Slack, Teams, Gmail, WhatsApp, TradingView, PagerDuty and dozens more are ready to go. Any other app works too.</p>
+  </div>
+</section>
+
+<section class="section day" id="day" aria-labelledby="day-title">
+  <div class="wrap">
+    <h2 id="day-title">Show me a day.</h2>
+    <p class="lead"><span class="line">An example weekday: 214 notifications from five apps.</span> <span class="line">4 rang, and 210 stayed quiet.</span></p>
+
+    <ol class="log">
+      <li class="quiet"><time datetime="07:31">07:31</time><p><span class="app">Gmail</span> Weekly digest: your top stories</p><span class="what">stayed quiet</span></li>
+      <li class="run"><span>18 more stayed quiet</span></li>
+      <li class="rang"><p class="app">Microsoft Teams, Alex Morgan</p><time datetime="09:35">09:35</time><p class="msg">Client call moved up. Join ASAP?</p><p class="rule">Ring me for Microsoft Teams when it's from Alex Morgan.</p></li>
+      <li class="run"><span>27 more stayed quiet</span></li>
+      <li class="quiet"><time datetime="11:52">11:52</time><p><span class="app">Slack, #random</span> Anyone up for lunch?</p><span class="what">stayed quiet</span></li>
+      <li class="run"><span>9 more stayed quiet</span></li>
+      <li class="rang"><p class="app">Calendar</p><time datetime="13:50">13:50</time><p class="msg">Board review starts in 10 minutes</p><p class="rule">Ring me for Calendar when it says “board”.</p></li>
+      <li class="run"><span>36 more stayed quiet</span></li>
+      <li class="quiet"><time datetime="15:20">15:20</time><p><span class="app">Slack, #incidents</span> Staging is down for a deploy</p><span class="what">stayed quiet: outside the rule's hours</span></li>
+      <li class="run"><span>46 more stayed quiet</span></li>
+      <li class="quiet"><time datetime="18:05">18:05</time><p><span class="app">Outlook</span> Room booking confirmed</p><span class="what">stayed quiet</span></li>
+      <li class="run"><span>23 more stayed quiet</span></li>
+      <li class="rang"><p class="app">Slack, #incidents</p><time datetime="22:41">22:41</time><p class="msg">Checkout is down, paging on call</p><p class="rule">Ring me for Slack when it says “down”, on weeknights from 22:00 to <span class="nowrap">07:00.&nbsp;<span class="mark">Pro</span></span></p></li>
+      <li class="run"><span>6 more stayed quiet</span></li>
+      <li class="night">
+        <div class="night-inner">
+          <div class="night-log">
+            <div class="ring"><p class="app">Slack, #incidents</p><time datetime="03:40">03:40</time><p class="msg">sev1: payments API is failing</p><p class="rule">Ring me for Slack when it says “sev1”, and ring again if I sleep through <span class="nowrap">it.&nbsp;<span class="mark">Pro</span></span></p></div>
+            <div class="again"><time datetime="03:42">03:42</time><p>Rang again. Stopped at 03:43.</p></div>
+          </div>
+          <figure class="capture">
+            <img src="images/alarm-0340.png" width="1040" height="1612" alt="The alarm on the Lock Screen at 3:40: Slack, #incidents: sev1: payments API is failing, with Snooze below.">
+          </figure>
+        </div>
       </li>
-      <li>
-        <h3>Say what matters</h3>
-        <p>Every notification, or only certain words or people. Add the hours and days it should ring.</p>
-      </li>
-      <li>
-        <h3>Let it ring</h3>
-        <p>A real iOS alarm, with Stop and Snooze, on the Lock Screen, in the Dynamic Island and on your Apple Watch.</p>
-      </li>
+      <li class="quiet after"><time datetime="07:00">07:00</time><p>41 more stayed quiet while you slept.</p></li>
     </ol>
   </div>
 </section>
 
-<section>
+<section class="section band" aria-labelledby="band-title">
   <div class="wrap">
-    <div class="intro">
-      <h2>Rules that read like you'd say them</h2>
-      <p>Each app gets its own rules. A message rings only when one of them matches.</p>
-    </div>
-    <div class="rules">
-      <div class="rule"><span class="app" aria-hidden="true">S</span><div><b>Incidents</b><p>Slack: outage, sev1, down or @here, on weeknights from 10 PM to 7 AM. Rings again until you stop it.</p></div></div>
-      <div class="rule"><span class="app" aria-hidden="true">T</span><div><b>My manager</b><p>Microsoft Teams: anything from Alex Morgan that says ASAP or urgent.</p></div></div>
-      <div class="rule"><span class="app" aria-hidden="true">G</span><div><b>Work travel</b><p>Gmail: gate change, delayed or cancelled.</p></div></div>
-      <div class="rule"><span class="app" aria-hidden="true">D</span><div><b>New orders</b><p>Your delivery app: every notification, during your shift.</p></div></div>
+    <h2 id="band-title">Ring me for…</h2>
+    <ul class="band-list">
+      <li><a href="rulebook.html#on-call"><span class="band-rule">Slack when it says “outage”, “sev1” or “down”.</span> <span class="band-job">On call</span></a></li>
+      <li><a href="rulebook.html#clients-and-managers"><span class="band-rule">Microsoft Teams when it's from Alex Morgan.</span> <span class="band-job">Clients and managers</span></a></li>
+      <li><a href="rulebook.html#markets"><span class="band-rule">TradingView alerts.</span> <span class="band-job">Markets</span></a></li>
+      <li><a href="rulebook.html#shifts-and-deliveries"><span class="band-rule">Uber Driver trip requests, during my <span class="nowrap">shift.&nbsp;<span class="mark">Pro</span></span></span> <span class="band-job">Shifts and deliveries</span></a></li>
+      <li><a href="rulebook.html#travel"><span class="band-rule">Gmail when it says “gate change”, “delayed” or “cancelled”.</span> <span class="band-job">Travel</span></a></li>
+    </ul>
+    <p class="more"><a href="rulebook.html">See every rule in the Rulebook</a></p>
+  </div>
+</section>
+
+<section class="section how" id="how-it-works" aria-labelledby="how-title">
+  <div class="wrap">
+    <h2 id="how-title">Tell me how it works.</h2>
+    <p class="lead">iOS doesn't let one app read another app's notifications, so RingMeFor works through Apple's Shortcuts app. The RingMeFor shortcut's automation hands each notification from your chosen apps to RingMeFor. RingMeFor checks it against your rules, on your iPhone. If it matches, an iOS alarm rings with Stop and Snooze on the Lock Screen and in the Dynamic Island; if not, nothing happens.</p>
+
+    <ol class="path" aria-label="A notification's path">
+      <li class="path-start">
+        <span class="slab mini"><span class="tile">S</span><span class="app">Slack, #incidents</span><span class="note"></span><span class="msg">Checkout outage, paging on call</span></span>
+        <span class="path-label">A notification arrives</span>
+      </li>
+      <li><span class="path-label">Shortcuts hands it to RingMeFor</span></li>
+      <li><span class="path-label">RingMeFor checks your rules</span></li>
+      <li class="path-end"><span class="path-label">It rings</span><span class="path-label quietly">or it stays quiet</span></li>
+    </ol>
+
+    <h3>Set it up</h3>
+    <ol class="steps">
+      <li><span><a data-config="store-link" href="https://apps.apple.com/us/app/ringmefor-notification-alarm/id6828677351">Get RingMeFor</a> and choose your apps, then the words and people that matter in each.</span></li>
+      <li><span>Add the RingMeFor shortcut. It already lists 25 common apps, and you can add others.</span></li>
+      <li><span>Turn on its automation in Shortcuts. It arrives switched off, and only you can turn it on.</span></li>
+      <li><span>Lock your iPhone and run Test with the Phone Locked.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section limits" aria-labelledby="limits-title">
+  <div class="wrap">
+    <h2 id="limits-title">Tell me what it can't do.</h2>
+    <div class="two">
+      <div>
+        <h3>What it can't do</h3>
+        <ul class="plain">
+          <li><span class="lede">Turn on its own automation.</span> You do that once in Shortcuts, because Apple doesn't let an app do it.</li>
+          <li><span class="lede">Ring after a restart before you unlock.</span> Until your iPhone has been unlocked once, nothing rings.</li>
+          <li><span class="lede">Hear what isn't delivered.</span> A Focus or Scheduled Summary that holds an app's notifications back keeps them from RingMeFor too.</li>
+          <li><span class="lede">Promise every run.</span> iOS can skip a run, so RingMeFor is a backup, not a medical or safety alarm.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>How it checks itself</h3>
+        <ul class="plain">
+          <li><span class="lede">Test with the Phone Locked</span> runs the whole path, from a notification to an alarm.</li>
+          <li><span class="lede">An optional nightly check</span> tells you if the shortcut stops answering.</li>
+          <li><span class="lede">Why Didn't It Ring?</span> looks at the shortcut, the app's rules and the alarm permission.</li>
+          <li><span class="lede">Test a Message</span> shows whether a message you type would ring.</li>
+          <li><span class="lede">History</span> shows what rang and what was skipped, and why.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="band">
+<section class="section keep" aria-labelledby="keep-title">
   <div class="wrap">
-    <div class="intro">
-      <h2>Made for the moment it rings</h2>
-    </div>
-    <div class="details">
-      <div><h3>Through Silent and Focus</h3><p>RingMeFor uses iOS's own alarms, the same kind as the Clock app, so it rings when nothing else does.</p></div>
-      <div><h3>A sound for each rule</h3><p>From a loud klaxon to birdsong, so you know what it is before you look.</p></div>
-      <div><h3>Ring again</h3><p>Sleep through it, and it rings up to three more times until you stop it.</p></div>
-      <div><h3>Quiet when you choose</h3><p>Only certain hours and days, a quiet time after an alarm, or one tap to turn it off, from the app, Siri or Control Center.</p></div>
-      <div><h3>It checks itself</h3><p>A test with the phone locked, an optional nightly check, and “Why didn't it ring?” for any app.</p></div>
-      <div><h3>Private by design</h3><p>Notifications are checked on your iPhone. Nothing is sent to the developer or anyone else.</p></div>
+    <h2 id="keep-title">Keep it on my iPhone.</h2>
+    <div class="prose">
+      <p>No account, no server, no internet needed. RingMeFor checks your notifications on your iPhone, and your rules and History stay there. Nothing is sent to the developer or anyone else. Read the <a href="privacy.html">privacy policy</a>.</p>
+      <p>iCloud sync can keep your apps, rules and alarm settings the same on your iPhones, through your own iCloud <span class="nowrap">account.&nbsp;<span class="mark">1.0.1 and later</span></span></p>
+      <p>RingMeFor is made by Lance Mikaelo Enriquez (Philippines). Write to <a href="mailto:lancemikaelo.enriquez@gmail.com">lancemikaelo.enriquez@gmail.com</a>.</p>
     </div>
   </div>
 </section>
 
-<section>
+<section class="section price" id="price" aria-labelledby="price-title">
   <div class="wrap">
-    <div class="intro">
-      <h2>See it</h2>
-    </div>
-    <div class="shots">
-      <figure><img src="images/home.jpg" alt="RingMeFor's Home screen with Slack, Microsoft Teams, Outlook, Gmail and Calendar, each with what it rings for." width="540" height="1173" loading="lazy"><figcaption>Your apps and what each one rings for</figcaption></figure>
-      <figure><img src="images/add-apps.jpg" alt="Adding apps from ready-made sections such as work chat and email." width="540" height="1173" loading="lazy"><figcaption>Ready-made apps, with sensible first rules</figcaption></figure>
-      <figure><img src="images/history.jpg" alt="History of alarms, with when each rang and how it was stopped." width="540" height="1173" loading="lazy"><figcaption>History: what rang, and why</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section id="pricing" class="band">
-  <div class="wrap">
-    <div class="intro">
-      <h2>Free for one app</h2>
-      <p>Try the whole chain, notification to alarm, before you pay anything.</p>
-    </div>
-    <div class="plans">
-      <div class="plan">
+    <h2 id="price-title">Charge me once.</h2>
+    <div class="two">
+      <div>
         <h3>Free</h3>
-        <p class="price">No time limit</p>
-        <ul>
-          <li>One app, with one rule</li>
-          <li>Words, people and exclusions</li>
-          <li>Stop, Snooze, History, Siri and Control Center</li>
-          <li>The locked-phone test and nightly check</li>
-        </ul>
+        <p>One app with one rule, with no time limit.</p>
       </div>
-      <div class="plan pro">
-        <h3>RingMeFor Pro</h3>
-        <p class="price">One purchase, no subscription</p>
-        <ul>
-          <li>Every app, with unlimited rules</li>
-          <li>Hours and days for each rule</li>
-          <li>Ring again until you stop it</li>
-          <li>Alarm sounds, a different one for each rule</li>
-          <li>The Ring Alarm action for your own shortcuts</li>
-        </ul>
+      <div>
+        <h3>Pro</h3>
+        <p><span data-config="price">$4.99</span>, paid once, with no subscription. Every app, unlimited rules, hours and days for each rule, Ring again, a sound for each rule, and the Ring Alarm action for your own shortcuts.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section>
+<section class="section questions" aria-labelledby="questions-title">
   <div class="wrap">
-    <div class="intro">
-      <h2>Questions</h2>
-    </div>
+    <h2 id="questions-title">Questions</h2>
     <div class="faq">
       <details>
         <summary>How does it know when a notification arrives?</summary>
@@ -316,25 +219,35 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
       </details>
       <details>
         <summary>Does it read or keep my messages?</summary>
-        <p>RingMeFor checks each notification against your rules on your iPhone and keeps a short History there. Nothing leaves your iPhone. Read the <a href="privacy.html">privacy policy</a>.</p>
+        <p>RingMeFor checks each notification against your rules on your iPhone and keeps a short History there. Nothing is sent to the developer or anyone else; iCloud sync (1.0.1 and later) uses your own iCloud account. Read the <a href="privacy.html">privacy policy</a>.</p>
       </details>
       <details>
         <summary>What if it didn't ring?</summary>
         <p>Open the app and tap “Why didn't it ring?”: it checks the shortcut, the app's rules and the alarm permission. The <a href="help.html">help page</a> covers the rest.</p>
       </details>
+      <details>
+        <summary>Doesn't Focus already do this?</summary>
+        <p>Focus chooses who can reach you by app or by person. It can't choose by what a message says, and what it lets through is still an ordinary notification, which makes one sound, or none on Silent. RingMeFor chooses by the words in the message as well, and it rings an alarm.</p>
+      </details>
     </div>
+    <p class="more"><a href="help.html">More answers in Help</a></p>
   </div>
 </section>
 
-<footer>
+<footer class="site-footer">
   <div class="wrap">
     <nav aria-label="More">
-      <a href="help.html">Help and support</a>
+      <a href="help.html">Help</a>
       <a href="privacy.html">Privacy policy</a>
+      <a href="press.html">Press</a>
       <a href="mailto:lancemikaelo.enriquez@gmail.com">lancemikaelo.enriquez@gmail.com</a>
     </nav>
     <p>© 2026 Lance Mikaelo Enriquez</p>
+    <p>This site sets no cookies and loads nothing from other servers.</p>
+    <p>Apple, iPhone, Apple Watch and Dynamic Island are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc., registered in the U.S. and other countries and regions. Other apps named on this site belong to their owners. RingMeFor isn't affiliated with them.</p>
   </div>
 </footer>
+
+<script src="home.js" defer></script>
 </body>
 </html>
