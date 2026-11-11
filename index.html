@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-itunes-app" content="app-id=6828677351">
 <title>RingMeFor: Notification Alarm for Apps</title>
 <meta name="description" content="RingMeFor rings a real alarm on your iPhone when a notification you can't miss arrives, even on Silent and in a Focus. Everything else stays quiet.">
 <meta property="og:title" content="RingMeFor: Notification Alarm for Apps">
@@ -69,6 +70,8 @@ p { margin: 0; }
 .hero .lead { margin-top: 22px; font-size: 21px; line-height: 1.5; color: var(--dim); max-width: 31em; }
 .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin-top: 32px; }
 .store { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; background: var(--indigo); color: #fff; font: 700 17px/1 var(--text); text-decoration: none; }
+.badge { display: inline-block; border-radius: 9px; }
+.badge img { display: block; height: 44px; width: auto; }
 .store.soon { background: transparent; border: 1.5px solid var(--line); color: var(--paper); cursor: default; }
 .cta .dim { font-size: 15px; }
 
@@ -177,9 +180,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
         <h1>Notification Alarm for Apps</h1>
         <p class="lead">Your iPhone stays quiet until the message you can't miss arrives. Then RingMeFor rings like an alarm, even on Silent and in a Focus.</p>
         <div class="cta">
-          <span class="store soon" aria-disabled="true">
-            Coming soon to the App Store
-          </span>
+          <a class="badge" href="https://apps.apple.com/us/app/ringmefor-notification-alarm/id6828677351"><img src="images/app-store-badge.svg" width="132" height="44" alt="Download on the App Store"></a>
           <span class="dim">For iPhone with iOS 27. Free for one app.</span>
         </div>
       </div>
