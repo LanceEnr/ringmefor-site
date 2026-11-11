@@ -838,3 +838,6 @@ ol.fix li::before { content: counter(fix); color: var(--muted); font-variant-num
   .policy-text a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #444; }
   .site-footer { margin-top: 24pt; color: #444; }
 }
+
+.help-shot { margin: 16px 0 6px; max-width: 440px; }
+.help-shot img { display: block; width: 100%; height: auto; border-radius: 18px; }
