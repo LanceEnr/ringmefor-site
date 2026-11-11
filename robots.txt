@@ -1,3 +1,2 @@
 User-agent: *
 Allow: /
-Sitemap: https://lanceenr.github.io/ringmefor-site/sitemap.xml
